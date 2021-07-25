@@ -1,3 +1,8 @@
+/*
+	Hecho por Guillermo Coelho
+	Terminado: 15/7/2021
+*/
+
 // VARIABLES
 const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
