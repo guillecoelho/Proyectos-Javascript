@@ -10,6 +10,7 @@ const vaciarCarrito = document.querySelector('#vaciar-carrito');
 const listaCursos = document.querySelector('#lista-cursos');
 let productos = [];
 
+// Puedo cargar los eventos al inicio asignandoles su funcion correspondiente
 cargarEventListeners();
 function cargarEventListeners() {
 	// Agrega un curso al presionar 'Agregar al carrito'
