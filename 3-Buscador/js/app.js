@@ -28,13 +28,16 @@ const filtroBusqueda = {
 
 //	Evento se ejecuta luego de cargar todo el archivo HTML
 document.addEventListener('DOMContentLoaded', () => {
-	mostrarAutos();
+	mostrarAutos(autos);
 
 	llenarSelect();
 });
 
+//	Eventos cuando cambian los select de busqueda
 selectMarca.addEventListener('change', (e) => {
 	filtroBusqueda.marca = e.target.value;
+
+	filtroAuto();
 });
 
 selectYear.addEventListener('change', (e) => {
@@ -64,7 +67,9 @@ selectColor.addEventListener('change', (e) => {
 //	FUNCIONES
 
 //	Muestra los autos en db.js en el <div> con id=resultado
-function mostrarAutos() {
+function mostrarAutos(autos) {
+	limpiarHTML();
+
 	//	Por cada auto que haya en el array
 	autos.forEach((auto) => {
 		//Puedo extraer los datos de la variable a sus respectivos nombres para no tener que escribir auto.dato cada vez que lo use
@@ -83,6 +88,13 @@ function mostrarAutos() {
 	});
 }
 
+//	Limpia el html de los resultados anteriores
+function limpiarHTML() {
+	while (resultado.firstChild) {
+		resultado.removeChild(resultado.firstChild);
+	}
+}
+
 //	Genera los años en el select
 function llenarSelect() {
 	//	Recorre desde el year actual hasta el minimo que se haya puesto
@@ -92,4 +104,25 @@ function llenarSelect() {
 		opcion.textContent = i; // Le asigno i al texto que se muestra en el select
 		year.appendChild(opcion); // Agrego el elemento al select
 	}
+}
+
+//	Funciones para filtrar los select
+function filtroAuto() {
+	const resultado = autos.filter(filtroMarca).filter(filtroYear);
+
+	mostrarAutos(resultado);
+}
+
+function filtroMarca(auto) {
+	if (filtroBusqueda.marca) {
+		return auto.marca === filtroBusqueda.marca;
+	}
+	return auto;
+}
+
+function filtroYear(auto) {
+	if (filtroBusqueda.year) {
+		return auto.year === parseInt(filtroBusqueda.year); // parseInt() convierte su contenido a number
+	}
+	return auto;
 }
