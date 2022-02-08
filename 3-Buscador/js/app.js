@@ -1,3 +1,8 @@
+/*
+	Hecho por: Guillermo Coelho
+	08/02/2022
+*/
+
 //	VARIABLES
 const selectMarca = document.querySelector('#marca'); // Select de marca
 const selectYear = document.querySelector('#year'); // Select de year
@@ -42,26 +47,38 @@ selectMarca.addEventListener('change', (e) => {
 
 selectYear.addEventListener('change', (e) => {
 	filtroBusqueda.year = e.target.value;
+
+	filtroAuto();
 });
 
 selectMinimo.addEventListener('change', (e) => {
 	filtroBusqueda.minPrecio = e.target.value;
+
+	filtroAuto();
 });
 
 selectMaximo.addEventListener('change', (e) => {
 	filtroBusqueda.maxPrecio = e.target.value;
+
+	filtroAuto();
 });
 
 selectPuertas.addEventListener('change', (e) => {
 	filtroBusqueda.puertas = e.target.value;
+
+	filtroAuto();
 });
 
 selectTransmision.addEventListener('change', (e) => {
 	filtroBusqueda.transmision = e.target.value;
+
+	filtroAuto();
 });
 
 selectColor.addEventListener('change', (e) => {
 	filtroBusqueda.color = e.target.value;
+
+	filtroAuto();
 });
 
 //	FUNCIONES
@@ -108,9 +125,29 @@ function llenarSelect() {
 
 //	Funciones para filtrar los select
 function filtroAuto() {
-	const resultado = autos.filter(filtroMarca).filter(filtroYear);
+	const resultado = autos
+		.filter(filtroMarca)
+		.filter(filtroYear)
+		.filter(filtroMinprecio)
+		.filter(filtroMaxprecio)
+		.filter(filtroPuertas)
+		.filter(filtroTransmicion)
+		.filter(filtroColor);
 
-	mostrarAutos(resultado);
+	if (resultado.length) {
+		mostrarAutos(resultado);
+	} else {
+		noResultado();
+	}
+}
+
+function noResultado() {
+	limpiarHTML();
+	const noResultado = document.createElement('div');
+	noResultado.classList.add('error', 'alerta');
+	noResultado.textContent =
+		'No hay resultados, intenta con diferentes opciones';
+	resultado.appendChild(noResultado);
 }
 
 function filtroMarca(auto) {
@@ -123,6 +160,41 @@ function filtroMarca(auto) {
 function filtroYear(auto) {
 	if (filtroBusqueda.year) {
 		return auto.year === parseInt(filtroBusqueda.year); // parseInt() convierte su contenido a number
+	}
+	return auto;
+}
+
+function filtroMinprecio(auto) {
+	if (filtroBusqueda.minPrecio) {
+		return auto.precio >= filtroBusqueda.minPrecio;
+	}
+	return auto;
+}
+
+function filtroMaxprecio(auto) {
+	if (filtroBusqueda.maxPrecio) {
+		return auto.precio <= filtroBusqueda.maxPrecio;
+	}
+	return auto;
+}
+
+function filtroPuertas(auto) {
+	if (filtroBusqueda.puertas) {
+		return auto.puertas === parseInt(filtroBusqueda.puertas);
+	}
+	return auto;
+}
+
+function filtroTransmicion(auto) {
+	if (filtroBusqueda.transmision) {
+		return auto.transmision === filtroBusqueda.transmision;
+	}
+	return auto;
+}
+
+function filtroColor(auto) {
+	if (filtroBusqueda.color) {
+		return auto.color === filtroBusqueda.color;
 	}
 	return auto;
 }
